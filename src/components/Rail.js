@@ -10,7 +10,7 @@ export class Rail extends Lightning.Component {
   }
   setItems(items) {
     for (let i = 0; i < items.length; i++) {
-      const tile = i % 2 ? new RoundedTile(this.stage) : new Tile(this.stage);
+      const tile = new Tile(this.stage);
       tile.setItem(items[i]);
       tile.x = 20 + (20 + tile.w) * i;
       this.tiles.push(tile);

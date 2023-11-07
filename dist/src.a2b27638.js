@@ -23454,7 +23454,7 @@ var Rail = exports.Rail = /*#__PURE__*/function (_Lightning$Component) {
     key: "setItems",
     value: function setItems(items) {
       for (var i = 0; i < items.length; i++) {
-        var tile = i % 2 ? new _RoundedTile.RoundedTile(this.stage) : new _Tile.Tile(this.stage);
+        var tile = new _Tile.Tile(this.stage);
         tile.setItem(items[i]);
         tile.x = 20 + (20 + tile.w) * i;
         this.tiles.push(tile);
