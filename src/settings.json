@@ -1,0 +1,7 @@
+{
+  "appSettings": {
+    "stage": {
+      "clearColor": "0xff000000"
+    },
+  }
+}
