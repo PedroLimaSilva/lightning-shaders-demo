@@ -12,12 +12,14 @@
     "start": {
       "name": "start",
       "command": "yarn start",
-      "runAtStart": true
+      "runAtStart": true,
+      "preview": {
+        "port": 1234
+      }
     },
     "build": {
       "name": "build",
-      "command": "yarn build",
-      "runAtStart": false
+      "command": "yarn build"
     }
   }
 }
