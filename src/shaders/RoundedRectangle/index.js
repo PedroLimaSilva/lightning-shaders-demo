@@ -9,6 +9,11 @@ export class RoundedRectangleShader extends Lightning.shaders
     this._radius = 0;
   }
 
+  set radius(v) {
+    this._radius = v;
+    this.redraw();
+  }
+
   setupUniforms(operation) {
     super.setupUniforms(operation);
     const owner = operation.shaderOwner;
@@ -21,6 +26,12 @@ export class RoundedRectangleShader extends Lightning.shaders
         owner._h * renderPrecision,
       ]),
       this.gl.uniform2fv,
+    );
+
+    this._setUniform(
+      "radius",
+      this._radius * renderPrecision,
+      this.gl.uniform1f,
     );
   }
 }

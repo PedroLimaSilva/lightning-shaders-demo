@@ -23317,7 +23317,7 @@ var Tile = exports.Tile = /*#__PURE__*/function (_Lightning$Component) {
   return Tile;
 }(_core.default.Component);
 },{"@lightningjs/core":"node_modules/@lightningjs/core/index.js"}],"src/shaders/RoundedRectangle/fragment.glsl":[function(require,module,exports) {
-module.exports = "#ifdef GL_ES\nprecision lowp float;\n#define GLSLIFY 1\n#endif\n\nvarying vec2 vTextureCoord;\nvarying vec4 vColor;\n\nuniform sampler2D uSampler;\nuniform vec2 resolution;\n\nvoid main() {\n  vec4 colorFromImage = texture2D(uSampler, vTextureCoord); \n\n  gl_FragColor = colorFromImage * vColor;\n}\n";
+module.exports = "#ifdef GL_ES\nprecision lowp float;\n#define GLSLIFY 1\n#endif\n\nvarying vec2 vTextureCoord;\nvarying vec4 vColor;\n\nuniform sampler2D uSampler;\nuniform vec2 resolution;\nuniform float radius;\n\nfloat boxDistP(vec2 coord){\n  vec2 d = (abs(coord - 0.5) - 0.5) * resolution + radius;\n  float p = min(max(d.x, d.y), 0.0) + length(max(d, 0.0)) - radius;\n  return clamp(-p, 0.0, 1.0);\n}\n\nvoid main() {\n  float isInsideRoundedBounds = boxDistP(vTextureCoord);\n\n  vec4 colorFromImage = texture2D(uSampler, vTextureCoord); \n\n  vec4 color = colorFromImage * vColor;\n  gl_FragColor = color * isInsideRoundedBounds;\n}\n";
 },{}],"src/shaders/RoundedRectangle/index.js":[function(require,module,exports) {
 "use strict";
 
@@ -23354,12 +23354,19 @@ var RoundedRectangleShader = exports.RoundedRectangleShader = /*#__PURE__*/funct
     return _this;
   }
   _createClass(RoundedRectangleShader, [{
+    key: "radius",
+    set: function set(v) {
+      this._radius = v;
+      this.redraw();
+    }
+  }, {
     key: "setupUniforms",
     value: function setupUniforms(operation) {
       _get(_getPrototypeOf(RoundedRectangleShader.prototype), "setupUniforms", this).call(this, operation);
       var owner = operation.shaderOwner;
       var renderPrecision = this.ctx.stage.getRenderPrecision();
       this._setUniform("resolution", new Float32Array([owner._w * renderPrecision, owner._h * renderPrecision]), this.gl.uniform2fv);
+      this._setUniform("radius", this._radius * renderPrecision, this.gl.uniform1f);
     }
   }]);
   return RoundedRectangleShader;
