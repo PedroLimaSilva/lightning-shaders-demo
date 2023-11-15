@@ -23316,7 +23316,56 @@ var Tile = exports.Tile = /*#__PURE__*/function (_Lightning$Component) {
   }]);
   return Tile;
 }(_core.default.Component);
-},{"@lightningjs/core":"node_modules/@lightningjs/core/index.js"}],"src/components/RoundedTile.js":[function(require,module,exports) {
+},{"@lightningjs/core":"node_modules/@lightningjs/core/index.js"}],"src/shaders/RoundedRectangle/fragment.glsl":[function(require,module,exports) {
+module.exports = "#ifdef GL_ES\nprecision lowp float;\n#define GLSLIFY 1\n#endif\n\nvarying vec2 vTextureCoord;\nvarying vec4 vColor;\n\nuniform sampler2D uSampler;\nuniform vec2 resolution;\n\nvoid main() {\n  vec4 colorFromImage = texture2D(uSampler, vTextureCoord); \n\n  gl_FragColor = colorFromImage * vColor;\n}\n";
+},{}],"src/shaders/RoundedRectangle/index.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.RoundedRectangleShader = void 0;
+var _core = _interopRequireDefault(require("@lightningjs/core"));
+var _fragment = _interopRequireDefault(require("./fragment.glsl"));
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _get() { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get.bind(); } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return _get.apply(this, arguments); }
+function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+var RoundedRectangleShader = exports.RoundedRectangleShader = /*#__PURE__*/function (_Lightning$shaders$We) {
+  _inherits(RoundedRectangleShader, _Lightning$shaders$We);
+  var _super = _createSuper(RoundedRectangleShader);
+  function RoundedRectangleShader(context) {
+    var _this;
+    _classCallCheck(this, RoundedRectangleShader);
+    _this = _super.call(this, context);
+    _this._radius = 0;
+    return _this;
+  }
+  _createClass(RoundedRectangleShader, [{
+    key: "setupUniforms",
+    value: function setupUniforms(operation) {
+      _get(_getPrototypeOf(RoundedRectangleShader.prototype), "setupUniforms", this).call(this, operation);
+      var owner = operation.shaderOwner;
+      var renderPrecision = this.ctx.stage.getRenderPrecision();
+      this._setUniform("resolution", new Float32Array([owner._w * renderPrecision, owner._h * renderPrecision]), this.gl.uniform2fv);
+    }
+  }]);
+  return RoundedRectangleShader;
+}(_core.default.shaders.WebGLDefaultShader);
+RoundedRectangleShader.fragmentShaderSource = _fragment.default;
+},{"@lightningjs/core":"node_modules/@lightningjs/core/index.js","./fragment.glsl":"src/shaders/RoundedRectangle/fragment.glsl"}],"src/components/RoundedTile.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -23324,6 +23373,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.RoundedTile = void 0;
 var _Tile2 = require("./Tile");
+var _RoundedRectangle = require("../shaders/RoundedRectangle");
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
@@ -23340,9 +23390,15 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 var RoundedTile = exports.RoundedTile = /*#__PURE__*/function (_Tile) {
   _inherits(RoundedTile, _Tile);
   var _super = _createSuper(RoundedTile);
-  function RoundedTile() {
+  function RoundedTile(stage) {
+    var _this;
     _classCallCheck(this, RoundedTile);
-    return _super.apply(this, arguments);
+    _this = _super.call(this, stage);
+    _this.shader = stage.renderer.createShader(stage.ctx, {
+      type: _RoundedRectangle.RoundedRectangleShader
+    });
+    _this.shader.radius = 10;
+    return _this;
   }
   _createClass(RoundedTile, [{
     key: "_focus",
@@ -23352,7 +23408,7 @@ var RoundedTile = exports.RoundedTile = /*#__PURE__*/function (_Tile) {
   }]);
   return RoundedTile;
 }(_Tile2.Tile);
-},{"./Tile":"src/components/Tile.js"}],"src/components/Rail.js":[function(require,module,exports) {
+},{"./Tile":"src/components/Tile.js","../shaders/RoundedRectangle":"src/shaders/RoundedRectangle/index.js"}],"src/components/Rail.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
