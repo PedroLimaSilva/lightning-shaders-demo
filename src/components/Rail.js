@@ -17,7 +17,7 @@ export class Rail extends Lightning.Component {
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
       const tile = new TILE_TYPE_MAP[item.type](this.stage);
-      tile.setItem(item.title);
+      tile.setItem(item);
       tile.x = 20 + (20 + tile.w) * i;
       this.tiles.push(tile);
       this.childList.add(tile);

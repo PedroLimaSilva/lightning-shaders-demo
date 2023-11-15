@@ -3,18 +3,18 @@ import { Rail } from "./Rail";
 
 const rails = [
   [
-    { title: "A", type: "DEFAULT" },
-    { title: "B", type: "DEFAULT" },
-    { title: "C", type: "ROUNDED" },
-    { title: "D", type: "DEFAULT" },
-    { title: "E", type: "DEFAULT" },
+    { title: "A", type: "DEFAULT", progress: 0.5 },
+    { title: "B", type: "DEFAULT", progress: 0.75 },
+    { title: "C", type: "ROUNDED", progress: 0.0 },
+    { title: "D", type: "DEFAULT", progress: 0.9 },
+    { title: "E", type: "DEFAULT", progress: 0.25 },
   ],
   [
-    { title: "F", type: "ROUNDED" },
-    { title: "G", type: "ROUNDED" },
-    { title: "H", type: "DEFAULT" },
-    { title: "I", type: "ROUNDED" },
-    { title: "J", type: "ROUNDED" },
+    { title: "F", type: "ROUNDED", progress: 0.5 },
+    { title: "G", type: "ROUNDED", progress: 0.75 },
+    { title: "H", type: "DEFAULT", progress: 0.1 },
+    { title: "I", type: "ROUNDED", progress: 0.9 },
+    { title: "J", type: "ROUNDED", progress: 0.25 },
   ],
 ];
 
