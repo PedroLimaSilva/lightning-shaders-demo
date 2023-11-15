@@ -5,16 +5,16 @@ const rails = [
   [
     { title: "A", type: "DEFAULT" },
     { title: "B", type: "DEFAULT" },
-    { title: "C", type: "DEFAULT" },
+    { title: "C", type: "ROUNDED" },
     { title: "D", type: "DEFAULT" },
     { title: "E", type: "DEFAULT" },
   ],
   [
-    { title: "F", type: "DEFAULT" },
-    { title: "G", type: "DEFAULT" },
+    { title: "F", type: "ROUNDED" },
+    { title: "G", type: "ROUNDED" },
     { title: "H", type: "DEFAULT" },
-    { title: "I", type: "DEFAULT" },
-    { title: "J", type: "DEFAULT" },
+    { title: "I", type: "ROUNDED" },
+    { title: "J", type: "ROUNDED" },
   ],
 ];
 

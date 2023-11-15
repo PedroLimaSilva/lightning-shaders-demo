@@ -1,8 +1,10 @@
 import Lightning from "@lightningjs/core";
+import { RoundedTile } from "./RoundedTile";
 import { Tile } from "./Tile";
 
 const TILE_TYPE_MAP = {
   DEFAULT: Tile,
+  ROUNDED: RoundedTile,
 };
 
 export class Rail extends Lightning.Component {
