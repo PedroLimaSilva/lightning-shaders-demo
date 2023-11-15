@@ -1,6 +1,10 @@
 import Lightning from "@lightningjs/core";
 import { Tile } from "./Tile";
 
+const TILE_TYPE_MAP = {
+  DEFAULT: Tile,
+};
+
 export class Rail extends Lightning.Component {
   constructor(stage) {
     super(stage);
@@ -9,8 +13,9 @@ export class Rail extends Lightning.Component {
   }
   setItems(items) {
     for (let i = 0; i < items.length; i++) {
-      const tile = new Tile(this.stage);
-      tile.setItem(items[i]);
+      const item = items[i];
+      const tile = new TILE_TYPE_MAP[item.type](this.stage);
+      tile.setItem(item.title);
       tile.x = 20 + (20 + tile.w) * i;
       this.tiles.push(tile);
       this.childList.add(tile);

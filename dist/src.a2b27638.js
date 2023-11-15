@@ -23339,6 +23339,9 @@ function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) ===
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+var TILE_TYPE_MAP = {
+  DEFAULT: _Tile.Tile
+};
 var Rail = exports.Rail = /*#__PURE__*/function (_Lightning$Component) {
   _inherits(Rail, _Lightning$Component);
   var _super = _createSuper(Rail);
@@ -23354,8 +23357,9 @@ var Rail = exports.Rail = /*#__PURE__*/function (_Lightning$Component) {
     key: "setItems",
     value: function setItems(items) {
       for (var i = 0; i < items.length; i++) {
-        var tile = new _Tile.Tile(this.stage);
-        tile.setItem(items[i]);
+        var item = items[i];
+        var tile = new TILE_TYPE_MAP[item.type](this.stage);
+        tile.setItem(item.title);
         tile.x = 20 + (20 + tile.w) * i;
         this.tiles.push(tile);
         this.childList.add(tile);
@@ -23409,7 +23413,37 @@ function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) ===
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-var rails = [["A", "B", "C", "D", "E"], ["F", "G", "H", "I", "J"]];
+var rails = [[{
+  title: "A",
+  type: "DEFAULT"
+}, {
+  title: "B",
+  type: "DEFAULT"
+}, {
+  title: "C",
+  type: "DEFAULT"
+}, {
+  title: "D",
+  type: "DEFAULT"
+}, {
+  title: "E",
+  type: "DEFAULT"
+}], [{
+  title: "F",
+  type: "DEFAULT"
+}, {
+  title: "G",
+  type: "DEFAULT"
+}, {
+  title: "H",
+  type: "DEFAULT"
+}, {
+  title: "I",
+  type: "DEFAULT"
+}, {
+  title: "J",
+  type: "DEFAULT"
+}]];
 var Content = exports.Content = /*#__PURE__*/function (_Lightning$Component) {
   _inherits(Content, _Lightning$Component);
   var _super = _createSuper(Content);

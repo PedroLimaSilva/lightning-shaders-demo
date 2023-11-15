@@ -2,8 +2,20 @@ import Lightning from "@lightningjs/core";
 import { Rail } from "./Rail";
 
 const rails = [
-  ["A", "B", "C", "D", "E"],
-  ["F", "G", "H", "I", "J"]
+  [
+    { title: "A", type: "DEFAULT" },
+    { title: "B", type: "DEFAULT" },
+    { title: "C", type: "DEFAULT" },
+    { title: "D", type: "DEFAULT" },
+    { title: "E", type: "DEFAULT" },
+  ],
+  [
+    { title: "F", type: "DEFAULT" },
+    { title: "G", type: "DEFAULT" },
+    { title: "H", type: "DEFAULT" },
+    { title: "I", type: "DEFAULT" },
+    { title: "J", type: "DEFAULT" },
+  ],
 ];
 
 export class Content extends Lightning.Component {
