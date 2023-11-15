@@ -1,6 +1,5 @@
 import Lightning from "@lightningjs/core";
 import { Tile } from "./Tile";
-import { RoundedTile } from "./RoundedTile";
 
 export class Rail extends Lightning.Component {
   constructor(stage) {
