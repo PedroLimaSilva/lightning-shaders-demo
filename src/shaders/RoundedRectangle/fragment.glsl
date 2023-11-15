@@ -17,7 +17,7 @@ float boxDistP(vec2 coord){
 }
 
 float progressBar(vec2 coord) {
-  return progress;
+  return clamp((step(coord.x, progress) - step(coord.y, 0.95)), 0.0, 1.0);
 }
 
 void main() {
@@ -29,5 +29,5 @@ void main() {
 
   float isInsideProgressBar = progressBar(vTextureCoord);
 
-  gl_FragColor = vec4(1.0) * isInsideProgressBar;
+  gl_FragColor = mix(color, vec4(1.0), isInsideProgressBar) * isInsideRoundedBounds;
 }
