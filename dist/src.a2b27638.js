@@ -23296,12 +23296,12 @@ var Tile = exports.Tile = /*#__PURE__*/function (_Lightning$Component) {
       this.rect = true;
       this.color = 0xffffffff;
       this.texture = new _core.default.textures.ImageTexture(this.stage);
-      this.texture.src = "https://picsum.photos/seed/".concat(item, "/").concat(WIDTH, "/").concat(HEIGHT);
+      this.texture.src = "https://picsum.photos/seed/".concat(item.title, "/").concat(WIDTH, "/").concat(HEIGHT);
       var label = new _core.default.Element(this.stage);
       var txt = new _core.default.textures.TextTexture(this.stage);
-      txt.text = item;
+      txt.text = item.title;
       label.texture = txt;
-      this.childList.add(label);
+      // this.childList.add(label);
     }
   }, {
     key: "_focus",
@@ -23317,7 +23317,7 @@ var Tile = exports.Tile = /*#__PURE__*/function (_Lightning$Component) {
   return Tile;
 }(_core.default.Component);
 },{"@lightningjs/core":"node_modules/@lightningjs/core/index.js"}],"src/shaders/RoundedRectangle/fragment.glsl":[function(require,module,exports) {
-module.exports = "#ifdef GL_ES\nprecision lowp float;\n#define GLSLIFY 1\n#endif\n\nvarying vec2 vTextureCoord;\nvarying vec4 vColor;\n\nuniform sampler2D uSampler;\nuniform vec2 resolution;\nuniform float radius;\n\nfloat boxDistP(vec2 coord){\n  vec2 d = (abs(coord - 0.5) - 0.5) * resolution + radius;\n  float p = min(max(d.x, d.y), 0.0) + length(max(d, 0.0)) - radius;\n  return clamp(-p, 0.0, 1.0);\n}\n\nvoid main() {\n  float isInsideRoundedBounds = boxDistP(vTextureCoord);\n\n  vec4 colorFromImage = texture2D(uSampler, vTextureCoord); \n\n  vec4 color = colorFromImage * vColor;\n  gl_FragColor = color * isInsideRoundedBounds;\n}\n";
+module.exports = "#ifdef GL_ES\nprecision lowp float;\n#define GLSLIFY 1\n#endif\n\nvarying vec2 vTextureCoord;\nvarying vec4 vColor;\n\nuniform sampler2D uSampler;\nuniform vec2 resolution;\nuniform float radius;\nuniform float progress;\n\nfloat boxDistP(vec2 coord){\n  vec2 d = (abs(coord - 0.5) - 0.5) * resolution + radius;\n  float p = min(max(d.x, d.y), 0.0) + length(max(d, 0.0)) - radius;\n  return clamp(-p, 0.0, 1.0);\n}\n\nfloat progressBar(vec2 coord) {\n  return progress;\n}\n\nvoid main() {\n  float isInsideRoundedBounds = boxDistP(vTextureCoord);\n\n  vec4 colorFromImage = texture2D(uSampler, vTextureCoord); \n\n  vec4 color = colorFromImage * vColor;\n\n  float isInsideProgressBar = progressBar(vTextureCoord);\n\n  gl_FragColor = vec4(1.0) * isInsideProgressBar;\n}\n";
 },{}],"src/shaders/RoundedRectangle/index.js":[function(require,module,exports) {
 "use strict";
 
@@ -23351,12 +23351,19 @@ var RoundedRectangleShader = exports.RoundedRectangleShader = /*#__PURE__*/funct
     _classCallCheck(this, RoundedRectangleShader);
     _this = _super.call(this, context);
     _this._radius = 0;
+    _this._progress = 0;
     return _this;
   }
   _createClass(RoundedRectangleShader, [{
     key: "radius",
     set: function set(v) {
       this._radius = v;
+      this.redraw();
+    }
+  }, {
+    key: "progress",
+    set: function set(v) {
+      this._progress = v;
       this.redraw();
     }
   }, {
@@ -23367,6 +23374,7 @@ var RoundedRectangleShader = exports.RoundedRectangleShader = /*#__PURE__*/funct
       var renderPrecision = this.ctx.stage.getRenderPrecision();
       this._setUniform("resolution", new Float32Array([owner._w * renderPrecision, owner._h * renderPrecision]), this.gl.uniform2fv);
       this._setUniform("radius", this._radius * renderPrecision, this.gl.uniform1f);
+      this._setUniform("progress", this._progress * renderPrecision, this.gl.uniform1f);
     }
   }]);
   return RoundedRectangleShader;
@@ -23387,6 +23395,8 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _get() { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get.bind(); } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return _get.apply(this, arguments); }
+function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
@@ -23408,9 +23418,22 @@ var RoundedTile = exports.RoundedTile = /*#__PURE__*/function (_Tile) {
     return _this;
   }
   _createClass(RoundedTile, [{
+    key: "setItem",
+    value: function setItem(item) {
+      _get(_getPrototypeOf(RoundedTile.prototype), "setItem", this).call(this, item);
+      this.shader.progress = item.progress;
+    }
+  }, {
     key: "_focus",
     value: function _focus() {
       this.color = 0xffff00ff;
+      this.setSmooth("scale", 1.05);
+    }
+  }, {
+    key: "_unfocus",
+    value: function _unfocus() {
+      _get(_getPrototypeOf(RoundedTile.prototype), "_unfocus", this).call(this);
+      this.setSmooth("scale", 1);
     }
   }]);
   return RoundedTile;
@@ -23460,7 +23483,7 @@ var Rail = exports.Rail = /*#__PURE__*/function (_Lightning$Component) {
       for (var i = 0; i < items.length; i++) {
         var item = items[i];
         var tile = new TILE_TYPE_MAP[item.type](this.stage);
-        tile.setItem(item.title);
+        tile.setItem(item);
         tile.x = 20 + (20 + tile.w) * i;
         this.tiles.push(tile);
         this.childList.add(tile);
@@ -23516,34 +23539,44 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 var rails = [[{
   title: "A",
-  type: "DEFAULT"
+  type: "DEFAULT",
+  progress: 0.5
 }, {
   title: "B",
-  type: "DEFAULT"
+  type: "DEFAULT",
+  progress: 0.75
 }, {
   title: "C",
-  type: "ROUNDED"
+  type: "ROUNDED",
+  progress: 0.0
 }, {
   title: "D",
-  type: "DEFAULT"
+  type: "DEFAULT",
+  progress: 0.9
 }, {
   title: "E",
-  type: "DEFAULT"
+  type: "DEFAULT",
+  progress: 0.25
 }], [{
   title: "F",
-  type: "ROUNDED"
+  type: "ROUNDED",
+  progress: 0.5
 }, {
   title: "G",
-  type: "ROUNDED"
+  type: "ROUNDED",
+  progress: 0.75
 }, {
   title: "H",
-  type: "DEFAULT"
+  type: "DEFAULT",
+  progress: 0.1
 }, {
   title: "I",
-  type: "ROUNDED"
+  type: "ROUNDED",
+  progress: 0.9
 }, {
   title: "J",
-  type: "ROUNDED"
+  type: "ROUNDED",
+  progress: 0.25
 }]];
 var Content = exports.Content = /*#__PURE__*/function (_Lightning$Component) {
   _inherits(Content, _Lightning$Component);
@@ -23763,7 +23796,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "35101" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "40299" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
